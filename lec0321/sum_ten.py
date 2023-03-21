@@ -15,3 +15,8 @@ for i in range(10):
     print(total)
 print(f"1부터 10까지 합은 {total}입니다.")
 print('='*20)
+
+# 1부터 10까지의 합을 구하시오(3).
+
+
+
