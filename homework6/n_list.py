@@ -1,12 +1,12 @@
 def n_list(num):
-    pass
+    x = []
+    for i in range(1, num + 1):
+        x.append(i)
+    return x
 
 def main():
     n = int(input('숫자를 입력하세요!:'))
-    x = []
-    for i in range(1, n+1):
-        x.append(i)
-    print(x)
+    print(n_list(n))
 
 if __name__ == "__main__":
     main()
