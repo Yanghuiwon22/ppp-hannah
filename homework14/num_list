@@ -1,0 +1,25 @@
+
+def num():
+    number_list = []
+    while True:
+        number = input("X=?")
+        try:
+            numb = int(number)
+            if numb > 0:
+                number_list.append(numb)
+                print(number_list)
+            else:
+                if numb == -1:
+                        break
+
+        except:
+            # str(number)
+            pass
+    return number_list
+
+
+def main():
+    print(f"입력된 값은 {num()}입니다.")
+
+if __name__=="__main__":
+    main()
