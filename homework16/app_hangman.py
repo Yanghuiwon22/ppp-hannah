@@ -5,9 +5,12 @@ from lec0511.gui_input import gui_input
 
 def main():
     global is_correct
-    problems = ["apple", "mango", "banana"]
+    problems = [
+        "apple", "mango", "banana", "blueberry", "blackberry", "apricot",
+        "coconut", "durian", "cherry", "grape", "grapefruit", "guava",
+        "lemon", "kiwi", "lime", "mandarine", "orange", "persimmon", "strawberry"
+    ]
     problem = random.choice(problems)
-    print(problem)
 
     answer = []
     for i in range(len(problem)):
@@ -15,8 +18,7 @@ def main():
 
     life = 7
     while life > 0:
-        print(''.join(answer))
-        text = gui_input(f"life = {life} 답을 입력하세요 =>")
+        text = gui_input(f"과일이름 맞추기 \n {' '.join(answer)} \n life = {life} \n 답을 입력하세요 =>")
         is_correct = False
 
         for i, x in enumerate(problem):
