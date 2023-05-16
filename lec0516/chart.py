@@ -13,7 +13,11 @@ def main():
     highlight = [None, None, None, 17]
     plt.plot(tmax, color="r", label="최고기온")
     plt.plot(tmin, color="b", label="최저기온")
-    # plt.plot(highlight, color="r")
+    plt.plot(highlight, color="r", label="마킹", marker="o")
+    plt.axhline(y=22, color = "r", linestyle = "--")
+
+
+
     plt.ylabel("기온(℃)")
     plt.legend()
     plt.show()
