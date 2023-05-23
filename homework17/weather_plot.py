@@ -2,7 +2,11 @@ import os
 from typing import List
 
 import requests
+
+import matplotlib
 import matplotlib.pyplot as plt
+print(matplotlib.get_cachedir())
+
 
 
 def download_weather(filename: str) -> None:
@@ -47,20 +51,51 @@ def read_data(filename) -> (List[str], List[float], List[float]):
 
 def making_dates_list(dates, input_month, input_day):
     dates_list = []
+    date_list = []
+
     for i in range(len(dates)):
         if input_month == dates[i][1] and input_day == dates[i][2]:
-            dates_list.append(dates[i])
+            date_list.append(int(dates[i][0]))
+            date_list.append(int(dates[i][1]))
+            date_list.append(int(dates[i][2]))
+
+            dates_list.append(date_list)
     return dates_list
 
 def aver_tem(dates,tavg, input_month, input_day):
-    tem = 0
+    tem = []
     dates_list = []
+    date_list = []
     for i in range(len(dates)):
         if input_month == dates[i][1] and input_day == dates[i][2]:
-            dates_list.append(dates[i])
-            tem += tavg[i]
+            date_list.append(int(dates[i][0]))
+            date_list.append(int(dates[i][1]))
+            date_list.append(int(dates[i][2]))
 
-    return tem / 42
+            dates_list.append(date_list)
+            tem.append(tavg[i])
+
+    return tem
+
+def sort_date(dates,tavg, input_month, input_day):
+    tem = []
+    dates_list = []
+    date_list = []
+
+    aver_tem_list = aver_tem(dates,tavg, input_month, input_day)
+    aver_sort = sorted(aver_tem_list)
+    print(aver_sort)
+
+    for i in range(len(dates)):
+        if input_month == dates[i][1] and input_day == dates[i][2]:
+            date_list.append(int(dates[i][0]))
+            date_list.append(int(dates[i][1]))
+            date_list.append(int(dates[i][2]))
+
+            dates_list.append(date_list)
+            tem.append(tavg[i])
+
+    return tem
 
 
 def main():
@@ -70,24 +105,34 @@ def main():
     # 2) 데이터 읽기 (주의: 빈 데이터 처리하기)
     dates, tavg, tmin, tmax = read_data(filename)
 
+
     # 3) 특정 날짜 받기
-    input_month = input("특정 month를 입력하세요(00월)")
-    input_day  = input("특정 day를 입력하세요(00일)")
-    print(f"특정 날짜는 {input_month}월 {input_day}일 입니다!")
-    print(making_dates_list(dates, input_month, input_day))
-
-    # 4) 특정 날짜의 평균 기온은?
-    print(f"해당 날짜의 평균기온은 {aver_tem(dates, tavg, input_month, input_day):.1f}")
-
+    # input_month = input("특정 month를 입력하세요(00월)")
+    # input_day  = input("특정 day를 입력하세요(00일)")
+    input_month = "05"
+    input_day  = "05"
+    # print(f"특정 날짜는 \{input_month}월 {input_day}일 입니다!")
+    print(f"특정 날짜는 05월 05일 입니다!")
 
 
+        # -1) 그래프로 표현하기
+    plt.rcParams['font.family'] = ['NanumGothic', 'sans-serif']
+    plt.rcParams['axes.unicode_minus'] = False
+
+    plt.xlabel("날짜")
+    plt.ylabel("기온(℃)")
+
+    aver_tem_list = aver_tem(dates,tavg, input_month, input_day)
+
+    # highlight = [None, None, None, 17]
+    plt.plot(aver_tem_list, color="r", label="평균기온", marker="o")
 
 
+    # 5) 해당 날짜가 40년 기간 중 몇 번째 높은 기온인지 출력하기
 
 
-
-
-
+    plt.legend()
+    plt.show()
 
 if __name__ == "__main__":
     main()
