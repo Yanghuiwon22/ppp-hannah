@@ -1,3 +1,5 @@
+import time
+
 import pygame as py
 
 py.init()  # 초기화 (반드시 필요)
@@ -12,6 +14,10 @@ py.display.set_caption("Hannah Farm") # 게임 이름 설정
 
 # 배경 이미지 불러오기
 background = py.image.load("_background.png")
+
+def f_field_position(field_position, field_position_x_pos, field_position_y_pos):
+    for i in range(5):
+
 
 
 
@@ -30,8 +36,8 @@ def main():
     field_position_size = field_position.get_rect().size  # 이미지의 크기를 구해옴
     field_position_width = field_position_size[0]  # 캐릭터의 가로 크기
     field_position_height = field_position_size[1]  # 캐릭터의 세로 크기
-    field_position_x_pos = 0  # 화면 가로의 절반 크기에 해당하는 곳에 위치
-    field_position_y_pos = 0  # 화면 세로 크기 가장 아래에 해당하는 곳에 위치
+    field_position_x_pos = 30
+    field_position_y_pos = screen_height - field_position_height - 30
 
     # 밭_1 이미지 생성하기
     field_1 = py.image.load("_field_1.jpg")
@@ -42,7 +48,7 @@ def main():
     field_1_x_pos = 0  # 화면 가로의 절반 크기에 해당하는 곳에 위치
     field_1_y_pos = 0  # 화면 세로 크기 가장 아래에 해당하는 곳에 위치
 
-    # 밭_1 이미지 생성하기
+    # 밭_2 이미지 생성하기
     field_2 = py.image.load("_field_2.jpg")
     field_2_size = field_2.get_rect().size  # 이미지의 크기를 구해옴
     print(field_2_size)
@@ -61,6 +67,10 @@ def main():
         for event in py.event.get():  # 어떤 이벤트가 발생하였는가?
             if event.type == py.QUIT:  # 창이 닫히는 이벤트가 발생하였는가?
                 running = False  # 게임이 진행중이 아님
+
+
+
+
 
             if event.type == py.KEYDOWN: # 키가 눌러졌는지 확인
                 if event.key == py.K_LEFT:
@@ -91,6 +101,7 @@ def main():
 
 
 
+
         character_x_pos += to_x
         character_y_pos += to_y
 
@@ -109,22 +120,28 @@ def main():
             character_y_pos = screen_height - character_height
 
         # 밭 고정 시키고 새로운 밭 생성하기
-        field_position = []
-        image = field_1
-        position_x = (field_1_x_pos, field_1_y_pos)
-        position_y = (field_1_x_pos, field_1_y_pos)
-        field_position.append((image, position_x, position_y))
+        f_field_position()
 
-
-
+            for i in range(5):
+                # pass
+                print(field_position_x_pos)
+                print(field_position_y_pos)
+                screen.blit(field_position, (field_position_x_pos, field_position_y_pos))  # field_1 위치 설정
+                field_position_x_pos = field_position_width + 70
+                field_position_y_pos = field_position_width + 70
 
 
 
         # screen.fill((0,0,255))
         screen.blit(background, (0,0)) # 배경 그리기 -> (0,0) 창에 완벽하게 맞게 설정
         screen.blit(character, (character_x_pos,character_y_pos)) # 배경 그리기 -> (0,0) 창에 완벽하게 맞게 설정
-        screen.blit(field_1, (field_1_x_pos,field_1_y_pos)) # field_1 위치 설정
-        screen.blit(field_2, (field_2_x_pos,field_2_y_pos)) # field_2 위치 설정
+        screen.blit(field_position, (field_position_x_pos,field_position_y_pos)) # field_position 위치 설정
+        screen.blit(field_position, (field_position_x_pos + 100,field_position_y_pos)) # field_position 위치 설정
+        screen.blit(field_position, (field_position_x_pos + 200,field_position_y_pos)) # field_position 위치 설정
+
+        # screen.blit(field_1, (field_1_x_pos, field_1_y_pos)) # field_1 위치 설정
+        # screen.blit(field_2, (field_2_x_pos, field_2_y_pos)) # field_2 위치 설정
+
 
 
         py.display.update() # 게임화면을 다시 그리기
