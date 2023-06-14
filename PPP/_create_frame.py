@@ -1,5 +1,4 @@
-import time
-
+import PySimpleGUI as sg
 import pygame as py
 
 py.init()  # 초기화 (반드시 필요)
@@ -16,10 +15,17 @@ py.display.set_caption("Hannah Farm") # 게임 이름 설정
 background = py.image.load("_background.png")
 
 def f_field_position(field_position, field_position_x_pos, field_position_y_pos):
-    for i in range(5):
+    for i in range(3):
+        field_x = []
+        field_y = []
 
-
-
+        field_position_y_pos -= 100
+        field_position_x_pos = 30
+        for i in range(5):
+            screen.blit(field_position, (field_position_x_pos, field_position_y_pos))
+            field_x.append(field_position_x_pos)# field_1 위치 설정
+            field_y.append(field_position_y_pos)# field_1 위치 설정
+            field_position_x_pos += 100
 
 def main():
     # 캐릭터(스프라이트) 불러오기
@@ -57,6 +63,22 @@ def main():
     field_2_x_pos = 0  # 화면 가로의 절반 크기에 해당하는 곳에 위치
     field_2_y_pos = 0  # 화면 세로 크기 가장 아래에 해당하는 곳에 위치
 
+    # 상점 이미지 생성하기
+    store = py.image.load("_store.png")
+    store_size = store.get_rect().size  # 이미지의 크기를 구해옴
+    store_width = store_size[0]  # 캐릭터의 가로 크기
+    store_height = store_size[1]  # 캐릭터의 세로 크기
+    store_x_pos = screen_width - store_width - 70  # 화면 가로의 절반 크기에 해당하는 곳에 위치
+    store_y_pos = +70   # 화면 세로 크기 가장 아래에 해당하는 곳에 위치
+
+    # 우물 이미지 생성하기
+    well = py.image.load("_well.jpg")
+    well_size = well.get_rect().size  # 이미지의 크기를 구해옴
+    well_width = well_size[0]  # 캐릭터의 가로 크기
+    well_height = well_size[1]  # 캐릭터의 세로 크기
+    well_x_pos = 70  # 화면 가로의 절반 크기에 해당하는 곳에 위치
+    well_y_pos = +70  # 화면 세로 크기 가장 아래에 해당하는 곳에 위치
+
     # 이동할 좌표
     to_x = 0
     to_y = 0
@@ -68,10 +90,6 @@ def main():
             if event.type == py.QUIT:  # 창이 닫히는 이벤트가 발생하였는가?
                 running = False  # 게임이 진행중이 아님
 
-
-
-
-
             if event.type == py.KEYDOWN: # 키가 눌러졌는지 확인
                 if event.key == py.K_LEFT:
                     to_x -= 0.3
@@ -82,22 +100,27 @@ def main():
                 elif event.key == py.K_DOWN:
                     to_y += 0.3
 
+                elif event.key == py.K_p: # 밭 위치 설정
+                    field_1_x_pos = character_x_pos
+                    field_1_y_pos = character_y_pos
+
+                elif event.key == py.MOUSEBUTTONDOWN:
+                    print("구매하시겠습니까?")
+
             if event.type == py.KEYUP:
                 if event.key == py.K_LEFT or event.key == py.K_RIGHT:
                     to_x = 0
                 elif event.key == py.K_UP or event.key == py.K_DOWN:
                     to_y = 0
 
-            # 제가 직접 짠 부분 ( 키를 누르면 밭이 생성되도록 )
-            if event.type == py.KEYDOWN:  # 밭 위치 설정
-                if event.key == py.K_p:
-                    field_1_x_pos = character_x_pos
-                    field_1_y_pos = character_y_pos
+
+
+
 
             if event.type == py.KEYDOWN:  # 밭 위치 설정
-                if event.key == py.K_o:
-                    field_2_x_pos = character_x_pos
-                    field_2_y_pos = character_y_pos
+                    if event.key == py.K_o:
+                        field_2_x_pos = character_x_pos
+                        field_2_y_pos = character_y_pos
 
 
 
@@ -120,27 +143,17 @@ def main():
             character_y_pos = screen_height - character_height
 
         # 밭 고정 시키고 새로운 밭 생성하기
-        f_field_position()
-
-            for i in range(5):
-                # pass
-                print(field_position_x_pos)
-                print(field_position_y_pos)
-                screen.blit(field_position, (field_position_x_pos, field_position_y_pos))  # field_1 위치 설정
-                field_position_x_pos = field_position_width + 70
-                field_position_y_pos = field_position_width + 70
-
-
 
         # screen.fill((0,0,255))
         screen.blit(background, (0,0)) # 배경 그리기 -> (0,0) 창에 완벽하게 맞게 설정
         screen.blit(character, (character_x_pos,character_y_pos)) # 배경 그리기 -> (0,0) 창에 완벽하게 맞게 설정
-        screen.blit(field_position, (field_position_x_pos,field_position_y_pos)) # field_position 위치 설정
-        screen.blit(field_position, (field_position_x_pos + 100,field_position_y_pos)) # field_position 위치 설정
-        screen.blit(field_position, (field_position_x_pos + 200,field_position_y_pos)) # field_position 위치 설정
+        screen.blit(field_1, (field_1_x_pos, field_1_y_pos)) # field_1 설정
+        screen.blit(field_2, (field_2_x_pos, field_2_y_pos)) # field_2 위치 설정
+        f_field_position(field_position,field_position_x_pos,field_position_y_pos) #  밭 생성하기 (x5)
+        screen.blit(store, (store_x_pos, store_y_pos)) # store 위치 설정
+        screen.blit(well, (well_x_pos, well_y_pos)) # well 위치 설정
 
-        # screen.blit(field_1, (field_1_x_pos, field_1_y_pos)) # field_1 위치 설정
-        # screen.blit(field_2, (field_2_x_pos, field_2_y_pos)) # field_2 위치 설정
+
 
 
 
