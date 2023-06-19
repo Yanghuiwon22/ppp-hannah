@@ -1,5 +1,7 @@
 import PySimpleGUI as sg
 import pygame as py
+import pyautogui as pa
+import tkinter as tk
 
 py.init()  # 초기화 (반드시 필요)
 
@@ -86,10 +88,10 @@ def forge_gui():
 
     window.close()
 
-def fence():
-    pass
 
 def main():
+
+    screen.geometry("800x1000+0+0")
     # 캐릭터(스프라이트) 불러오기
     character = py.image.load("_character.png")
     character_size = character.get_rect().size  # 이미지의 크기를 구해옴
@@ -120,6 +122,8 @@ def main():
     bag_x_pos = screen_width - bag_setting_size[0]
     bag_y_pos = screen_height - bag_setting_size[1]
 
+    # 마우스 좌표
+
     # 이동할 좌표
     to_x = 0
     to_y = 0
@@ -135,6 +139,8 @@ def main():
             if event.type == py.QUIT:  # 창이 닫히는 이벤트가 발생하였는가?
                 running = False  # 게임이 진행중이 아님
 
+            print(pa.position())
+
             if event.type == py.KEYDOWN: # 키가 눌러졌는지 확인
                 if event.key == py.K_LEFT:
                     to_x -= character_speed
@@ -145,12 +151,22 @@ def main():
                 elif event.key == py.K_DOWN:
                     to_y += character_speed
 
+                elif event.type == py.MOUSEBUTTONDOWN and event.button == 1:
+                    pa.position()
+                    mouse_x_pos, mouse_y_pos = pa.position()
+                    print(mouse_x_pos, mouse_y_pos)
+
+                    if store_x_pos < mouse_x_pos < store_x_pos + store_setting_size[0] and store_y_pos < mouse_y_pos < store_y_pos + store_setting_size[1]:
+                        print("가방을 클릭")
+
 
             if event.type == py.KEYUP:
                 if event.key == py.K_LEFT or event.key == py.K_RIGHT:
                     to_x = 0
                 elif event.key == py.K_UP or event.key == py.K_DOWN:
                     to_y = 0
+
+
 
         character_x_pos += to_x
         character_y_pos += to_y
@@ -168,6 +184,9 @@ def main():
         elif character_y_pos > screen_height - character_height:
             character_y_pos = screen_height - character_height
 
+        # 마우스 위치 설정
+        p
+
         screen.blit(background, (0,0)) # 배경 그리기 -> (0,0) 창에 완벽하게 맞게 설정
         screen.blit(character, (character_x_pos,character_y_pos)) # 캐릭터 위치 설정
         field_set() # 밭 15개 기본 위치 설정
@@ -175,7 +194,7 @@ def main():
         screen.blit(forge_setting, (forge_x_pos, forge_y_pos))  # 대장간 위치 설정
         screen.blit(bag_setting, (bag_x_pos, bag_y_pos)) # 가방 위치 설정
 
-        # 상점 접근시 gui창 띄우기ㅁ
+        # 상점 접근시 gui창 띄우기
         if store_x_pos < character_x_pos < store_x_pos + store_setting_size[0] and store_y_pos < character_y_pos < store_y_pos + store_setting_size[1]:
             store_gui()
             character_y_pos += 2
@@ -184,6 +203,9 @@ def main():
         if forge_x_pos < character_x_pos < forge_x_pos + forge_setting_size[0] and forge_y_pos < character_y_pos < forge_y_pos + forge_setting_size[1]:
             forge_gui()
             character_y_pos += 2
+
+
+
 
         py.display.update() # 게임화면을 다시 그리기
 
